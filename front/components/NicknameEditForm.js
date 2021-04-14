@@ -4,7 +4,6 @@ import { UserOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  width: 30%;
   margin: 10px;
 `;
 

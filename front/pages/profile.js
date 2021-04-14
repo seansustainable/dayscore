@@ -11,17 +11,19 @@ const Profile = () => {
 
     return (
         <AppLayout>
-            <Row>
-                <NicknameEditForm />
+            <Row start="md" center="xs">
+                <Col xs={24} md={8}>
+                    <NicknameEditForm />
+                </Col>
             </Row>
-            <Row>
-                <Col xs={24} md={12}>
+            <Row gutter={8}>
+                <Col xs={12} md={12}>
                     <FollowList
                         header="팔로잉"
                         followInfo={followingList}
                     />
                 </Col>
-                <Col xs={24} md={12}>
+                <Col xs={12} md={12}>
                     <FollowList
                         header="팔로워"
                         followInfo={followerList}
