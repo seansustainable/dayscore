@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { Menu, Input, Row, Col } from 'antd';
 import UserProfile from "./UserProfile";
 import LoginForm from "./LoginForm";
+import {useSelector} from "react-redux";
 
 const AppLayout = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
     const onSearch = useCallback(() => {
         console.log('onSearch');
@@ -15,6 +17,9 @@ const AppLayout = ({ children }) => {
     return (
         <>
             <Menu mode="horizontal" style={{ display: 'flex' }}>
+                <Menu.Item>
+                    <Link href="/"><a>💯 dayscore</a></Link>
+                </Menu.Item>
                 <Menu.Item>
                     <Link href="/profile"><a>내정보</a></Link>
                 </Menu.Item>
@@ -30,7 +35,7 @@ const AppLayout = ({ children }) => {
             </Menu>
             <Row gutter={8}>
                 <Col xs={24} md={6}>
-                    {isLoggedIn ? <UserProfile setIsLoggedIn={setIsLoggedIn} /> : <LoginForm setIsLoggedIn={setIsLoggedIn} />}
+                    {isLoggedIn ? <UserProfile /> : <LoginForm />}
                 </Col>
                 <Col xs={24} md={18}>
                     {children}

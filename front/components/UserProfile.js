@@ -1,14 +1,19 @@
 import React, {useCallback, useMemo} from 'react';
 import {Card, Avatar, Button} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import {useDispatch} from "react-redux";
+import { LOG_OUT } from '../reducers/user';
 
-
-const UserProfile = ({ setIsLoggedIn }) => {
+const UserProfile = (/*{ setIsLoggedIn }*/) => {
+    const dispatch = useDispatch();
 
     const buttonStyle = useMemo(() => ({ marginTop: 20 }), []);
 
     const onLogOut = useCallback(() => {
-        setIsLoggedIn(false);
+        // setIsLoggedIn(false);
+        dispatch({
+            type: LOG_OUT,
+        })
     }, []);
 
     return (

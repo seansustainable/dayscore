@@ -2,12 +2,15 @@ import React, {useCallback, useMemo} from 'react';
 import { Form, Input, Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
+import {useDispatch} from "react-redux";
+import { LOG_IN } from '../reducers/user';
 
 const FormWrapper = styled(Form)`
   margin-top: 20px;
 `;
 
-const LoginForm = ({ setIsLoggedIn }) => {
+const LoginForm = (/*{ setIsLoggedIn }*/) => {
+    const dispatch = useDispatch();
 
     const layout = {
         labelCol: {
@@ -29,7 +32,14 @@ const LoginForm = ({ setIsLoggedIn }) => {
 
     const onFinish = useCallback((values) => {
         console.log('Success:', values);
-        setIsLoggedIn(true);
+        const id = values.id;
+        const password = values.password;
+        // setIsLoggedIn(true);
+        dispatch({
+            type: LOG_IN,
+            id,
+            password,
+        })
     }, []);
 
     const onFinishFailed = useCallback((errorInfo) => {
