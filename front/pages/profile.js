@@ -1,13 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import NicknameEditForm from '../components/NicknameEditForm';
 import AppLayout from '../components/AppLayout';
 import FollowList from '../components/FollowList';
 import { Row, Col } from 'antd';
+import {useSelector} from "react-redux";
+import Router from "next/router";
+
 
 const Profile = () => {
+    const { me } = useSelector((state) => state.user);
     const followingList = [{ nickname: 'a' }, { nickname: 'a' }, { nickname: 'a' }];
     const followerList = [{ nickname: 'b' }, { nickname: 'b' }, { nickname: 'b' }];
+
+    useEffect(() => {
+        if (!(me && me.id)) {
+            Router.push('/');
+        }
+    }, [me && me.id]);
 
     return (
         <AppLayout>
@@ -20,13 +30,13 @@ const Profile = () => {
                 <Col xs={12} md={12}>
                     <FollowList
                         header="팔로잉"
-                        followInfo={followingList}
+                        followInfo={me?.Followings}
                     />
                 </Col>
                 <Col xs={12} md={12}>
                     <FollowList
                         header="팔로워"
-                        followInfo={followerList}
+                        followInfo={me?.Followers}
                     />
                 </Col>
             </Row>

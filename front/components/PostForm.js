@@ -1,19 +1,19 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import { Form, Input, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPost } from '../reducers/post';
+import { ADD_POST_REQUEST } from '../reducers/post';
 
 const PostForm = () => {
     const [text, setText] = useState('');
     const dispatch = useDispatch();
     const imageInput = useRef();
-    const { imagePaths, postAdded } = useSelector(state => state.post);
+    const { imagePaths, addPostLoading, addPostDone } = useSelector(state => state.post);
 
     useEffect(() => {
-        if (postAdded) {
+        if (addPostDone) {
             setText('');
         }
-    }, [postAdded]);
+    }, [addPostDone]);
 
     const styleForm = useMemo(() => ({ margin: 20 }), []);
 
@@ -26,7 +26,12 @@ const PostForm = () => {
     }, [imageInput.current]);
 
     const onSubmit = useCallback(() => {
-        dispatch(addPost);
+        dispatch({
+            type: ADD_POST_REQUEST,
+            data: {
+                text,
+            },
+        });
     }, []);
 
     return (
@@ -35,7 +40,7 @@ const PostForm = () => {
             <div>
                 <input type="file" multiple hidden ref={imageInput} />
                 <Button onClick={onClickImageUpload} style={{ marginTop: 3 }}>이미지 업로드</Button>
-                <Button type="primary" style={{ float: 'right', marginTop: 3 }} htmlType="submit">작성하기</Button>
+                <Button type="primary" style={{ float: 'right', marginTop: 3 }} htmlType="submit" loading={addPostLoading}>작성하기</Button>
             </div>
             <div>
                 {imagePaths.map((v) => {

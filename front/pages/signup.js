@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import Head from 'next/head';
 import AppLayout from "../components/AppLayout";
 import { Form, Input, Select, Checkbox, Button, PageHeader } from 'antd';
 import styled from 'styled-components';
+import {useDispatch, useSelector} from "react-redux";
+import Router from "next/router";
+import { SIGN_UP_REQUEST } from '../reducers/user';
 
 const FormWrapper = styled(Form)`
   margin-top: 20px;
@@ -15,10 +18,30 @@ const HeaderWrapper = styled(PageHeader)`
 
 const Signup = () => {
     const [form] = Form.useForm();
+    const dispatch = useDispatch();
+    const { signUpLoading, me } = useSelector((state) => state.user);
 
-    const onFinish = (values) => {
+    useEffect(() => {
+        if (me) {
+            alert('로그인 상태입니다. 메인 페이지로 이동합니다.')
+            Router.push('/');
+        }
+    }, [me && me.id]);
+
+    const onFinish = useCallback((values) => {
         console.log('Received values of form: ', values);
-    };
+        const email = values.email;
+        const password = values.password;
+        const nickname = values.nickname;
+        return dispatch({
+            type: SIGN_UP_REQUEST,
+            data: {
+                email,
+                password,
+                nickname,
+            },
+        });
+    }, []);
 
     const formItemLayout = {
         labelCol: {
@@ -187,7 +210,7 @@ const Signup = () => {
                         </Checkbox>
                     </Form.Item>
                     <Form.Item {...tailFormItemLayout}>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" loading={signUpLoading}>
                             가입하기
                         </Button>
                     </Form.Item>

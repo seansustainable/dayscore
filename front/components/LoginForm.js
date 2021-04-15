@@ -3,7 +3,7 @@ import { Form, Input, Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
 import {useDispatch} from "react-redux";
-import { LOG_IN } from '../reducers/user';
+import { LOG_IN_REQUEST } from '../reducers/user';
 
 const FormWrapper = styled(Form)`
   margin-top: 20px;
@@ -32,13 +32,12 @@ const LoginForm = (/*{ setIsLoggedIn }*/) => {
 
     const onFinish = useCallback((values) => {
         console.log('Success:', values);
-        const id = values.id;
+        const email = values.email;
         const password = values.password;
         // setIsLoggedIn(true);
         dispatch({
-            type: LOG_IN,
-            id,
-            password,
+            type: LOG_IN_REQUEST,
+            data: { email, password }
         })
     }, []);
 

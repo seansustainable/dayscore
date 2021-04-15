@@ -3,9 +3,11 @@ import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
 import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import PostImages from './PostImages';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import CommentForm from "./CommentForm";
 import PostCardContent from './PostCardContent';
+import { REMOVE_POST_REQUEST } from '../reducers/post';
+import FollowButton from './FollowButton';
 
 const CardWrapper = styled.div`
   margin: 20px;
@@ -15,6 +17,8 @@ const PostCard = ({ post }) => {
     const [liked, setLiked] = useState(false);
     const [commentFormOpened, setCommentFormOpened] = useState(false);
     const id = useSelector((state) => state.user.me && state.user.me.id);
+    const dispatch = useDispatch();
+    const { removePostLoading } = useSelector((state) => state.post);
 
     const onToggleLike = useCallback(() => {
         setLiked((prev) => !prev);
@@ -22,6 +26,13 @@ const PostCard = ({ post }) => {
 
     const onToggleComment = useCallback(() => {
         setCommentFormOpened((prev) => !prev);
+    }, []);
+
+    const onRemovePost = useCallback(() => {
+        dispatch({
+            type: REMOVE_POST_REQUEST,
+            data: post.id,
+        });
     }, []);
 
     return (
@@ -42,7 +53,7 @@ const PostCard = ({ post }) => {
                                     ? (
                                         <>
                                             <Button>수정</Button>
-                                            <Button type="danger">삭제</Button>
+                                            <Button type="danger" loading={removePostLoading} onClick={onRemovePost}>삭제</Button>
                                         </>
                                     )
                                     : <Button>신고</Button>}
@@ -52,11 +63,12 @@ const PostCard = ({ post }) => {
                         <EllipsisOutlined />
                     </Popover>,
                 ]}
+                extra={<FollowButton post={post} />}
             >
                 <Card.Meta
                     avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
                     title={post.User.nickname}
-                    description={<PostCardContent postData={post.content} />}
+                    // description={<PostCardContent postData={post.content} />}
                 />
             </Card>
             {commentFormOpened && (
