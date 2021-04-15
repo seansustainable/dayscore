@@ -1,93 +1,100 @@
-import React, {useCallback, useMemo} from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Form, Input, Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
-import {useDispatch} from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import { LOG_IN_REQUEST } from '../reducers/user';
 
 const FormWrapper = styled(Form)`
   margin-top: 20px;
 `;
 
-const LoginForm = (/*{ setIsLoggedIn }*/) => {
-    const dispatch = useDispatch();
+const LoginForm = (/* { setIsLoggedIn } */) => {
+  const dispatch = useDispatch();
+  const { logInLoading, logInError } = useSelector((state) => state.user);
 
-    const layout = {
-        labelCol: {
-            span: 7,
-        },
-        wrapperCol: {
-            span: 14,
-        },
-    };
+  useEffect(() => {
+    if (logInError) {
+      alert(logInError);
+    }
+  }, [logInError]);
 
-    const tailLayout = {
-        wrapperCol: {
-            offset: 7,
-            span: 14,
-        },
-    };
+  const layout = {
+    labelCol: {
+      span: 7,
+    },
+    wrapperCol: {
+      span: 14,
+    },
+  };
 
-    const buttonStyle = useMemo(() => ({ marginRight: 15 }), [])
+  const tailLayout = {
+    wrapperCol: {
+      offset: 7,
+      span: 14,
+    },
+  };
 
-    const onFinish = useCallback((values) => {
-        console.log('Success:', values);
-        const email = values.email;
-        const password = values.password;
-        // setIsLoggedIn(true);
-        dispatch({
-            type: LOG_IN_REQUEST,
-            data: { email, password }
-        })
-    }, []);
+  const buttonStyle = useMemo(() => ({ marginRight: 15 }), []);
 
-    const onFinishFailed = useCallback((errorInfo) => {
-        console.log('Failed:', errorInfo);
-    }, []);
+  const onFinish = useCallback((values) => {
+    console.log('Success:', values);
+    const { email } = values;
+    const { password } = values;
+    // setIsLoggedIn(true);
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data: { email, password },
+    });
+  }, []);
 
-    return (
-        <FormWrapper
-            {...layout}
-            initialValues={{
-                remember: true,
-            }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-        >
-            <Form.Item
-                label="이메일"
-                name="email"
-                rules={[
-                    {
-                        required: true,
-                        message: '이메일을 입력해주세요!',
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>
+  const onFinishFailed = useCallback((errorInfo) => {
+    console.log('Failed:', errorInfo);
+  }, []);
 
-            <Form.Item
-                label="비밀번호"
-                name="password"
-                rules={[
-                    {
-                        required: true,
-                        message: '비밀번호를 입력해주세요!',
-                    },
-                ]}
-            >
-                <Input.Password />
-            </Form.Item>
+  return (
+    <FormWrapper
+      {...layout}
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+    >
+      <Form.Item
+        label="이메일"
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: '이메일을 입력해주세요!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
 
-            <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit" loading={false} style={buttonStyle}>
-                    로그인
-                </Button>
-                <Link href="/signup"><a>회원가입</a></Link>
-            </Form.Item>
-        </FormWrapper>
-    );
-}
+      <Form.Item
+        label="비밀번호"
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: '비밀번호를 입력해주세요!',
+          },
+        ]}
+      >
+        <Input.Password />
+      </Form.Item>
+
+      <Form.Item {...tailLayout}>
+        <Button type="primary" htmlType="submit" loading={logInLoading} style={buttonStyle}>
+          로그인
+        </Button>
+        <Link href="/signup"><a>회원가입</a></Link>
+      </Form.Item>
+    </FormWrapper>
+  );
+};
 
 export default LoginForm;
