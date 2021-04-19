@@ -8,23 +8,28 @@ const FollowButton = ({ post }) => {
   const dispatch = useDispatch();
   const { me, followLoading, unfollowLoading } = useSelector((state) => state.user);
   const isFollowing = me?.Followings.find((v) => v.id === post.User.id);
+
   const onClickButton = useCallback(() => {
+    if (!me) {
+      alert('로그인을 먼저 해주세요.');
+      return null;
+    }
+
+    if (post.User?.id === me?.id) {
+      return null;
+    }
+
     if (isFollowing) {
-      dispatch({
+      return dispatch({
         type: UNFOLLOW_REQUEST,
         data: post.User.id,
       });
-    } else {
-      dispatch({
-        type: FOLLOW_REQUEST,
-        data: post.User.id,
-      });
     }
+    return dispatch({
+      type: FOLLOW_REQUEST,
+      data: post.User.id,
+    });
   }, [isFollowing]);
-
-  if (post.User?.id === me?.id) {
-    return null;
-  }
 
   return (
     <Button loading={followLoading || unfollowLoading} onClick={onClickButton}>

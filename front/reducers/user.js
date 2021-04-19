@@ -12,6 +12,7 @@ const dummyUser = (data) => ({
   ...data,
   nickname: 'Sean',
   description: 'Win or Learn',
+  score: 99,
   id: 1,
   Posts: [{ id: 1 }],
   Actions: [
@@ -19,6 +20,7 @@ const dummyUser = (data) => ({
     { id: 2, title: '커밋 하기', description: '1일 1커밋 이상', score: 2 },
     { id: 3, title: '블로그 포스팅하기', description: '1일 1포스팅 이상', score: 3 },
   ],
+  Scores: [{ id: 1, title: '물 마시기', description: '하루에 물 7잔 마시기', score: 1 }],
   Followings: [{ nickname: '김첨지' }, { nickname: '뭉' }, { nickname: '가냥' }],
   Followers: [{ nickname: '김첨지' }, { nickname: '뭉' }, { nickname: '가냥' }],
 });
@@ -89,6 +91,11 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 export const ADD_ACTION_TO_ME = 'ADD_ACTION_TO_ME';
 export const REMOVE_ACTION_OF_ME = 'REMOVE_ACTION_OF_ME';
 
+export const ADD_SCORES_TO_ME = 'ADD_SCORES_TO_ME';
+export const REMOVE_SCORES_OF_ME = 'REMOVE_SCORES_OF_ME';
+
+export const UPDATE_SCORE = 'UPDATE_SCORE';
+
 export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
 export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
 export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
@@ -121,7 +128,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case LOG_IN_SUCCESS:
       draft.logInLoading = false;
-      draft.me = dummyUser(action.data);
+      draft.me = action.data;
       draft.logInDone = true;
       break;
     case LOG_IN_FAILURE:
@@ -162,6 +169,8 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case CHANGE_NICKNAME_SUCCESS:
       draft.changeNicknameLoading = false;
+      draft.me.nickname = action.data.nickname;
+      draft.me.description = action.data.description;
       draft.changeNicknameDone = true;
       break;
     case CHANGE_NICKNAME_FAILURE:
@@ -222,6 +231,20 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case REMOVE_ACTION_OF_ME:
       draft.me.Actions = draft.me.Actions.filter((v) => v.id !== action.data);
       break;
+    case ADD_SCORES_TO_ME: {
+      // eslint-disable-next-line array-callback-return
+      action.data.map((itemIndex) => {
+        const item = draft.me.Actions.find((v) => v.id === itemIndex);
+        draft.me.score += item.score;
+        draft.me.Scores.unshift(item);
+      });
+      break;
+    }
+    case REMOVE_SCORES_OF_ME:
+      draft.me.Scores = draft.me.Scores.filter((v) => v.id !== action.data);
+      break;
+    case UPDATE_SCORE:
+      draft.me.score += draft.me.Scores.map((v) => v.score).reduce((a, b) => a + b);
     case LOAD_USER_REQUEST:
       draft.loadUserLoading = true;
       draft.loadUserError = null;

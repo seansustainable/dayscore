@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
-import { List, PageHeader } from 'antd';
+import { List, PageHeader, Card, Divider } from 'antd';
 import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
 import AppLayout from '../components/AppLayout';
-import actionReducer, { LOAD_ACTIONS_REQUEST, REMOVE_ACTION_REQUEST } from '../reducers/action';
+import { LOAD_ACTIONS_REQUEST } from '../reducers/action';
 import ActionForm from '../components/ActionForm';
 import ActionCard from '../components/ActionCard';
 
@@ -21,7 +21,6 @@ const HeaderWrapper = styled(PageHeader)`
 
 const Action = () => {
   const { me } = useSelector((state) => state.user);
-  const { mainActions } = useSelector((state) => state.actionReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,14 +37,7 @@ const Action = () => {
     dispatch({
       type: LOAD_ACTIONS_REQUEST,
     });
-  }, []);
-
-  const onCancel = (id) => () => {
-    dispatch({
-      type: REMOVE_ACTION_REQUEST,
-      data: id,
-    });
-  };
+  }, [me.Actions]);
 
   return (
     <>
@@ -59,26 +51,17 @@ const Action = () => {
           subTitle="내가 하는 모든 행동에 점수를 부여해보세요. 💯"
         />
         {me && <ActionForm />}
-        {mainActions.map((c) => (
-          <ActionCard key={c.id} action={c} />
-        ))}
-        <ListWrapper
-          className="action-list"
-          itemLayout="horizontal"
-          dataSource={me.Actions}
-          renderItem={(item) => (
-            <List.Item
-              actions={[<a key="edit">수정</a>, <a key="delete" onClick={onCancel(item.id)}>삭제</a>]}
-            >
-              <List.Item.Meta
-                avatar={<div>중요</div>}
-                title={<div>{item.title}</div>}
-                description={item.description}
-              />
-              <div>{item.score}</div>
-            </List.Item>
-          )}
-        />
+        <Card style={{ margin: 10 }}>
+          <Divider orientation="left">등록된 액션 목록</Divider>
+          <ListWrapper
+            className="action-list"
+            itemLayout="horizontal"
+            dataSource={me.Actions}
+            renderItem={(item) => (
+              <ActionCard key={item.id} action={item} />
+            )}
+          />
+        </Card>
       </AppLayout>
     </>
   );

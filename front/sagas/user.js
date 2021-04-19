@@ -35,16 +35,17 @@ import {
 } from '../reducers/user';
 
 function logInAPI(data) {
-  return axios.post('/api/login', data);
+  return axios.post('/user/login', data);
 }
 
 function* logIn(action) {
   try {
-    // const result = yield call(logInAPI);
-    yield delay(1000);
+    const result = yield call(logInAPI, action.data);
+    console.log(result);
+    // yield delay(1000);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     console.error(err);
@@ -56,13 +57,14 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post('/api/logout');
+  return axios.post('/user/logout');
 }
 
 function* logOut() {
   try {
-    // const result = yield call(logOutAPI);
-    yield delay(1000);
+    const result = yield call(logOutAPI);
+    // yield delay(1000);
+    console.log(result);
     yield put({
       type: LOG_OUT_SUCCESS,
     });
@@ -75,14 +77,15 @@ function* logOut() {
   }
 }
 
-function signUpAPI() {
-  return axios.post('/api/signUp');
+function signUpAPI(data) {
+  return axios.post('/user', data); // req.body
 }
 
-function* signUp() {
+function* signUp(action) {
   try {
-    // const result = yield call(signUpAPI);
-    yield delay(1000);
+    const result = yield call(signUpAPI, action.data);
+    // yield delay(1000);
+    console.log(result);
     yield put({
       type: SIGN_UP_SUCCESS,
     });
@@ -95,17 +98,17 @@ function* signUp() {
   }
 }
 
-function followAPI() {
-  return axios.post('/api/follow');
+function followAPI(data) {
+  return axios.patch(`/user/${data}/follow`);
 }
 
 function* follow(action) {
   try {
-    // const result = yield call(followAPI);
-    yield delay(1000);
+    const result = yield call(followAPI, action.data);
+    // yield delay(1000);
     yield put({
       type: FOLLOW_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     console.error(err);
@@ -116,17 +119,17 @@ function* follow(action) {
   }
 }
 
-function unfollowAPI() {
-  return axios.post('/api/unfollow');
+function unfollowAPI(data) {
+  return axios.delete(`/user/${data}/follow`);
 }
 
 function* unfollow(action) {
   try {
-    // const result = yield call(unfollowAPI);
-    yield delay(1000);
+    const result = yield call(unfollowAPI, action.data);
+    // yield delay(1000);
     yield put({
       type: UNFOLLOW_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     console.error(err);
@@ -158,12 +161,13 @@ function* loadUser(action) {
 }
 
 function changeNicknameAPI(data) {
-  return axios.patch('/user/nickname', { nickname: data });
+  return axios.patch('/user/nickname', data);
 }
 
 function* changeNickname(action) {
   try {
     const result = yield call(changeNicknameAPI, action.data);
+    // yield delay(1000);
     yield put({
       type: CHANGE_NICKNAME_SUCCESS,
       data: result.data,

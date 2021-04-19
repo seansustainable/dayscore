@@ -3,16 +3,32 @@ import faker from 'faker';
 import produce from '../util/produce';
 
 export const initialState = {
-  mainActions: [{
-    id: 1,
-    title: 'a',
-    description: 'b',
-    score: 1,
-    User: {
-      id: 1,
-      nickname: 'Sean',
-    },
-  }],
+  mainActions: [
+    { id: 1,
+      title: '물 마시기',
+      description: '하루에 물 7잔 마시기',
+      score: 1,
+      User: {
+        id: 1,
+        nickname: 'Sean',
+      } },
+    { id: 2,
+      title: '커밋 하기',
+      description: '1일 1커밋 이상',
+      score: 2,
+      User: {
+        id: 1,
+        nickname: 'Sean',
+      } },
+    { id: 3,
+      title: '블로그 포스팅하기',
+      description: '1일 1포스팅 이상',
+      score: 3,
+      User: {
+        id: 1,
+        nickname: 'Sean',
+      } },
+  ],
   loadActionsLoading: false,
   loadActionsDone: false,
   loadActionsError: null,
@@ -22,6 +38,11 @@ export const initialState = {
   removeActionLoading: false,
   removeActionDone: false,
   removeActionError: null,
+  addScoresDone: false,
+  addScoresError: null,
+  removeScoresLoading: false,
+  removeScoresDone: false,
+  removeScoresError: null,
 };
 
 export const LOAD_ACTIONS_REQUEST = 'LOAD_ACTIONS_REQUEST';
@@ -98,10 +119,6 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.removeActionLoading = false;
       draft.removeActionDone = true;
       draft.mainActions = draft.mainActions.filter((v) => v.id !== action.data);
-      break;
-    case REMOVE_ACTION_FAILURE:
-      draft.removeActionLoading = false;
-      draft.removeActionError = action.error;
       break;
     default:
       break;

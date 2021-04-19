@@ -1,14 +1,16 @@
 import React, { useCallback } from 'react';
-import { Card, Button } from 'antd';
+import { Card, Button, Divider, List } from 'antd';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { REMOVE_ACTION_REQUEST } from '../reducers/action';
 
 const CardWrapper = styled.div`
   margin: 20px;
+  padding: 20px;
+  border-bottom: 1px solid lightgray;
 `;
 
-// eslint-disable-next-line react/prop-types
 const ActionCard = ({ action }) => {
   const id = useSelector((state) => state.user.me && state.user.me.id);
   const dispatch = useDispatch();
@@ -26,22 +28,23 @@ const ActionCard = ({ action }) => {
   }, [id]);
 
   return (
-  // eslint-disable-next-line react/prop-types
-    <CardWrapper key={action.id}>
-      <Card
-        actions={[
-          <Button>수정</Button>,
-          <Button type="danger" loading={removeActionLoading} onClick={onRemoveAction}>삭제</Button>,
-        ]}
+    <CardWrapper>
+      <List.Item
+        actions={[<a key="edit">수정</a>, <a key="delete" loading={removeActionLoading} onClick={onRemoveAction}>삭제</a>]}
       >
-        <div>{action.score}</div>
-        <Card.Meta
-          title={action.title}
+        <List.Item.Meta
+          avatar={<div>i</div>}
+          title={<div>{action.title}</div>}
           description={action.description}
         />
-      </Card>
+        <div>{action.score}</div>
+      </List.Item>
     </CardWrapper>
   );
+};
+
+ActionCard.propTypes = {
+  action: PropTypes.object.isRequired,
 };
 
 export default ActionCard;

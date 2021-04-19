@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
 import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -100,25 +100,25 @@ const PostCard = ({ post }) => {
         title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
         extra={<FollowButton post={post} />}
       >
-        {/* {post.RetweetId && post.Retweet */}
-        {/*  ? ( */}
-        {/*    <Card */}
-        {/*      cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />} */}
-        {/*    > */}
-        {/*      <Card.Meta */}
-        {/*        avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>} */}
-        {/*        title={post.Retweet.User.nickname} */}
-        {/*        description={<PostCardContent postData={post.Retweet.content} />} */}
-        {/*      /> */}
-        {/*    </Card> */}
-        {/*  ) */}
-        {/*  : ( */}
-        <Card.Meta
-          avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-          title={post.User.nickname}
-          // description={<PostCardContent postData={post.content} />}
-        />
-        {/*  )} */}
+        {post.RetweetId && post.Retweet
+          ? (
+            <Card
+              cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}
+            >
+              <Card.Meta
+                avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>}
+                title={post.Retweet.User.nickname}
+                description={<PostCardContent postData={post.Retweet.content} />}
+              />
+            </Card>
+          )
+          : (
+            <Card.Meta
+              avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+              title={post.User.nickname}
+              description={<PostCardContent postData={post.content} />}
+            />
+          )}
       </Card>
       {commentFormOpened && (
         <>

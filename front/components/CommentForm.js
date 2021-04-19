@@ -14,8 +14,14 @@ const ButtonWrapper = styled(Button)`
 const CommentForm = ({ post }) => {
   const [commentText, setCommentText] = useState('');
   const id = useSelector((state) => state.user.me?.id);
-  const { addCommentDone, addCommentLoading } = useSelector((state) => state.post);
+  const { addCommentDone, addCommentLoading, addCommentError } = useSelector((state) => state.post);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (addCommentError) {
+      alert(addCommentError);
+    }
+  }, [addCommentError]);
 
   useEffect(() => {
     if (addCommentDone) {

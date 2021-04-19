@@ -21,7 +21,7 @@ const UserProfile = (/* { setIsLoggedIn } */) => {
     <Card
       style={{ margin: 10 }}
       actions={[
-        <div key="score">점수<br />0</div>,
+        <div key="score">점수<br />{me.score || 0}</div>,
         <div key="follow">팔로잉<br />{me.Followings.length}</div>,
         <div key="follow">팔로워<br />{me.Followers.length}</div>,
       ]}

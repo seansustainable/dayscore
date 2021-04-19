@@ -34,7 +34,7 @@ const PostForm = () => {
       formData.append('image', p);
     });
     formData.append('content', text);
-    dispatch({
+    return dispatch({
       type: ADD_POST_REQUEST,
       data: formData,
     });
@@ -63,7 +63,7 @@ const PostForm = () => {
     <Form style={styleForm} encType="multipart/form-data" onFinish={onSubmit}>
       <Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder="어떤 일이 있었나요?" />
       <div>
-        <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages} />
+        <input type="file" name="image" multiple hidden ref={imageInput} onChange={onChangeImages} />
         <Button onClick={onClickImageUpload} style={{ marginTop: 3 }}>이미지 업로드</Button>
         <Button type="primary" style={{ float: 'right', marginTop: 3 }} htmlType="submit" loading={addPostLoading}>작성하기</Button>
       </div>

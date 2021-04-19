@@ -5,6 +5,8 @@ import { Menu, Input, Row, Col } from 'antd';
 import { useSelector } from 'react-redux';
 import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
+import ScoreAddForm from './ScoreAddForm';
+import ScoreList from './ScoreList';
 
 const AppLayout = ({ children }) => {
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,7 +37,13 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {me ? <UserProfile /> : <LoginForm />}
+          <div>
+            {me ? <UserProfile /> : <LoginForm />}
+          </div>
+          <div>
+            {me ? <ScoreAddForm /> : null}
+            {me ? <ScoreList /> : null}
+          </div>
         </Col>
         <Col xs={24} md={18}>
           {children}

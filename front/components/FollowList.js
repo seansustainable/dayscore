@@ -12,7 +12,6 @@ const Wrapper = styled.div`
 `;
 
 const FollowList = ({ header, followInfo }) => {
-  console.log(followInfo);
   const dispatch = useDispatch();
   const onCancel = (id) => () => {
     if (header === '팔로잉') {
@@ -39,7 +38,6 @@ const FollowList = ({ header, followInfo }) => {
             <List.Item.Meta
               avatar={<Avatar icon={<UserOutlined />} />}
               title={item.nickname}
-              description={item.description}
             />
             <div onClick={onCancel(item.id)}><a>언팔로우</a></div>
           </List.Item>

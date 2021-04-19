@@ -24,7 +24,7 @@ const NicknameEditForm = () => {
   }, [nickname, description]);
 
   return (
-    <Wrapper onClick={onSubmit}>
+    <Wrapper onFinish={onSubmit}>
       <Divider orientation="left">프로필</Divider>
       <Input
         placeholder="Add a nickname"
@@ -39,7 +39,7 @@ const NicknameEditForm = () => {
         onChange={onChangeDescription}
       />
       <br /><br />
-      <Button type="primary" block>
+      <Button type="primary" htmlType="submit" block>
         수정하기
       </Button>
     </Wrapper>

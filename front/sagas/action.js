@@ -49,7 +49,9 @@ function* addAction(action) {
       type: ADD_ACTION_SUCCESS,
       data: {
         id,
-        content: action.data,
+        title: action.title,
+        description: action.description,
+        score: action.score,
       },
     });
     yield put({
