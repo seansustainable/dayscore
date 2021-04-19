@@ -4,6 +4,7 @@ const { isLoggedIn } = require('./middlewares');
 const multer = require('multer');
 const router = express.Router();
 const fs = require('fs');
+const path = require('path');
 
 try {
     fs.accessSync('uploads');

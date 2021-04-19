@@ -1,43 +1,25 @@
-import React, { useState } from 'react';
-import { Modal, Button, List, Checkbox } from 'antd';
+import React, { useCallback, useState } from 'react';
+import { Modal, Button, List } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { ADD_SCORES_TO_ME } from '../reducers/user';
 
 const ScoreAddForm = () => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
-  const [values, setValues] = useState([]);
-  const { mainActions } = useSelector((state) => state.actionReducer);
+  const { me } = useSelector((state) => state.user);
 
   const showModal = () => {
     setVisible(true);
   };
 
-  const handleOk = () => {
-    console.log(values);
-    try {
-      dispatch({
-        type: ADD_SCORES_TO_ME,
-        data: values,
-      });
-      setVisible(false);
-    } catch (e) {
-      throw new Error(e);
-    }
-  };
-
-  const handleCancel = () => {
-    setValues([]);
-    setVisible(false);
-  };
-
-  const onChangeCheck = (e) => {
-    if (e.target.checked) {
-      setValues([...values, e.target.value]);
-    } else {
-      setValues([...values].filter((v) => v !== e.target.value));
-    }
-  };
+  const onAdd = useCallback((id) => {
+    console.log(id);
+    // dispatch({
+    //   type: ADD_SCORES_TO_ME,
+    //   data: item,
+    // });
+    // setVisible(false);
+  }, []);
 
   return (
     <>
@@ -47,29 +29,28 @@ const ScoreAddForm = () => {
       <Modal
         title="오늘의 활동 액션 등록하기"
         visible={visible}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        okButtonProps={{ disabled: true }}
+        cancelButtonProps={{ disabled: true }}
         okText="등록"
         cancelText="취소"
       >
-        <Checkbox.Group style={{ width: '100%' }}>
-          <List
-            size="small"
-            dataSource={mainActions}
-            renderItem={(item) => (
-              <>
-                <Checkbox value={item.id} onChange={onChangeCheck}>Checkbox</Checkbox>
-                <List.Item>
-                  <List.Item.Meta
-                    title={item.title}
-                    description={item.description}
-                  />
-                  <div>{item.score}</div>
-                </List.Item>
-              </>
-            )}
-          />
-        </Checkbox.Group>
+        <List
+          style={{ width: '100%' }}
+          size="small"
+          dataSource={me.Actions}
+          renderItem={(item) => (
+            <>
+              <List.Item>
+                <List.Item.Meta
+                  title={item.title}
+                  description={item.description}
+                />
+                <div>{item.score}</div>
+                <div onClick={onAdd(item.id)}><a>추가</a></div>
+              </List.Item>
+            </>
+          )}
+        />
       </Modal>
     </>
   );

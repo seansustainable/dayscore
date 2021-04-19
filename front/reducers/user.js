@@ -226,22 +226,20 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       //   },
       // };
     case ADD_ACTION_TO_ME:
-      draft.me.Actions.unshift({ id: action.data });
+      draft.me.Actions.unshift(action.data);
       break;
     case REMOVE_ACTION_OF_ME:
       draft.me.Actions = draft.me.Actions.filter((v) => v.id !== action.data);
       break;
     case ADD_SCORES_TO_ME: {
       // eslint-disable-next-line array-callback-return
-      action.data.map((itemIndex) => {
-        const item = draft.me.Actions.find((v) => v.id === itemIndex);
-        draft.me.score += item.score;
-        draft.me.Scores.unshift(item);
-      });
+      draft.me.score += action.data.score;
+      draft.me.Scores.unshift(action.data);
       break;
     }
     case REMOVE_SCORES_OF_ME:
-      draft.me.Scores = draft.me.Scores.filter((v) => v.id !== action.data);
+      draft.me.score -= action.data.score;
+      draft.me.Scores = draft.me.Scores.filter((v) => v.id !== action.data.id);
       break;
     case UPDATE_SCORE:
       draft.me.score += draft.me.Scores.map((v) => v.score).reduce((a, b) => a + b);

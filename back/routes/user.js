@@ -1,5 +1,5 @@
 const express = require('express');
-const { User, Post, Action } = require('../models');
+const { User, Post, Action, Score } = require('../models');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const router = express.Router();
@@ -29,6 +29,9 @@ router.get('/', async (req, res, next) => {
                     attributes: ['id'],
                 }, {
                     model: Action,
+                    attributes: ['id'],
+                }, {
+                    model: Score,
                     attributes: ['id'],
                 }]
             })
@@ -95,6 +98,8 @@ router.post('/login', isNotLoggedIn, (req, res, next) => passport.authenticate('
                 as: 'Followers',
             }, {
                 model: Action,
+            }, {
+                model: Score,
             }]
         })
         // res.setHeader('Cookie', 'cxlxy');

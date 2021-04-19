@@ -16,6 +16,7 @@ const FollowButton = ({ post }) => {
     }
 
     if (post.User?.id === me?.id) {
+      alert('본인을 팔로우할 수 없습니다.');
       return null;
     }
 
@@ -29,7 +30,7 @@ const FollowButton = ({ post }) => {
       type: FOLLOW_REQUEST,
       data: post.User.id,
     });
-  }, [isFollowing]);
+  }, [me, isFollowing]);
 
   return (
     <Button loading={followLoading || unfollowLoading} onClick={onClickButton}>

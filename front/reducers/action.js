@@ -1,6 +1,7 @@
 import shortId from 'shortid';
 import faker from 'faker';
 import produce from '../util/produce';
+import { REMOVE_POST_FAILURE } from './post';
 
 export const initialState = {
   mainActions: [
@@ -104,7 +105,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case ADD_ACTION_SUCCESS:
       draft.addActionLoading = false;
       draft.addActionDone = true;
-      draft.mainActions.unshift(dummyAction(action.data));
+      draft.mainActions.unshift(action.data);
       break;
     case ADD_ACTION_FAILURE:
       draft.addActionLoading = false;
@@ -119,6 +120,10 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.removeActionLoading = false;
       draft.removeActionDone = true;
       draft.mainActions = draft.mainActions.filter((v) => v.id !== action.data);
+      break;
+    case REMOVE_ACTION_FAILURE:
+      draft.removeActionLoading = false;
+      draft.removeActionError = action.error;
       break;
     default:
       break;

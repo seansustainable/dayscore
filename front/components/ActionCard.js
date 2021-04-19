@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Card, Button, Divider, List } from 'antd';
+import { List } from 'antd';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';

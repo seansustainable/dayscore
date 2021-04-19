@@ -8,10 +8,10 @@ const ScoreList = () => {
   const { me } = useSelector((state) => state.user);
 
   const onDelete = useCallback((id) => {
-    console.log('del', id);
+    console.log(id);
     // dispatch({
     //   type: REMOVE_SCORES_OF_ME,
-    //   data: id,
+    //   data: item,
     // });
   }, []);
 
@@ -26,7 +26,6 @@ const ScoreList = () => {
               title={item.title}
             />
             <div style={{ marginRight: 20 }}>{item.score}</div>
-            <div><a>삭제</a></div>
           </List.Item>
         )}
       />

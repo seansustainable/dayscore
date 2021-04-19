@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(100),
             allowNull: true,
         },
+        score: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+        },
     }, {
         // 한글 저장(기존 MySQL에서는 한글을 넣으면 한글이 깨짐)
         charset: 'utf8',
@@ -41,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
             as: 'Followings',
             foreignKey: 'FollowerId' // 중간 테이블 컬럼명, followerId로부터 Followings를 검색
         })
+        db.User.hasMany(db.Score);
     };
     return User;
 }

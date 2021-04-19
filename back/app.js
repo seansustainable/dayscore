@@ -7,10 +7,12 @@ const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const actionRouter = require('./routes/action');
 const postsRouter = require('./routes/posts');
+const actionsRouter = require('./routes/actions');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const path = require('path');
 
 dotenv.config();
 const app = express();
@@ -28,6 +30,7 @@ app.use(cors({
 }));
 
 // front에서 post로 보낸 데이터를 req.body에 넣어주는 역할을 한다. 다른 라우터들보다 상단에 위치해야 한다.
+app.use('/', express.static(path.join(__dirname, 'uploads'))); // uploads 폴더를 프론트에 제공, 서버 구조가 가려져 보안에 유리
 app.use(express.json()); // json 형식
 app.use(express.urlencoded({ extended: true })); // form submit 형식
 
@@ -55,6 +58,7 @@ app.use('/user', userRouter);
 app.use('/post', postRouter);
 app.use('/action', actionRouter);
 app.use('/posts', postsRouter);
+app.use('/actions', actionsRouter);
 
 // 에러 처리 미들웨어는 내부적으로 존재
 app.use((err, req, res, next) => {
